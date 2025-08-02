@@ -1,0 +1,13 @@
+{
+    "name": "مدرسه شهید بهشتی",
+    "short_name": "مدرسه شهید بهشتی",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "icons": [
+        {
+            "src": "Sampad.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}
