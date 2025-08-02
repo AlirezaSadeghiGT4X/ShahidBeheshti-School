@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ثبت غیبت مدرسه شهید بهشتی</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="icon" href="Sampad.png" type="image/png">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        .scrollable {
+            max-height: 180px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="Sampad.png" alt="آرم سازمان ملی پرورش استعداد های درخشان" width="100" height="100">
+        <h1>حضور و غیاب مدرسه شهید بهشتی</h1>
+        <input type="text" id="personnelCode" placeholder="کد پرسنلی دبیر" autocomplete="off">
+        <button onclick="checkPersonnelCode()" id="checkCode">بررسی کد پرسنلی دبیر</button>
+        <div id="absenceSection" style="display: none;">
+            <select id="students" multiple></select>
+            <button onclick="registerAbsences()" id="register">ثبت غیبت</button>
+        </div>
+        <div id="absenceList" class="scrollable"></div> 
+        <br>
+        <label>برای پاک کردن غیبت ها رمز عبور را وارد کنید :</label>
+        <input type="password" id="adminPassword" placeholder="رمز عبور">
+        <button onclick="clearAbsences()" class="delete">پاک کردن غیبت‌ها</button>
+    </div>
+    <script>
+        let isSubmitting = false;  
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('checkCode').addEventListener('click', checkPersonnelCode);
+            document.getElementById('register').addEventListener('click', registerAbsences);
+            document.getElementById('adminPassword').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    clearAbsences();
+                }
+            });
+
+            showAllAbsences();
+        });
+
+        function checkPersonnelCode() {
+            const personnelCode = document.getElementById('personnelCode').value;
+            fetch('get_students.php?code=' + personnelCode)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        document.getElementById('absenceSection').style.display = 'block';
+                        document.getElementById('personnelCode').style.display = 'none';
+                        document.getElementById('checkCode').style.display = 'none';
+                        const studentSelect = document.getElementById('students');
+                        studentSelect.innerHTML = '';
+                        data.forEach(student => {
+                            const option = document.createElement('option');
+                            option.value = student;
+                            option.textContent = student;
+                            studentSelect.appendChild(option);
+                        });
+                    } else {
+                        alert('کد پرسنلی معتبر نیست یا دانش آموزی برای این زمان وجود ندارد.');
+                        document.getElementById("personnelCode").value="";
+                    }
+                });
+        }
+
+        function registerAbsences() {
+            if (isSubmitting) return;
+
+            isSubmitting = true; 
+            const students = Array.from(document.getElementById('students').selectedOptions).map(option => option.value);
+            fetch('register.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({students: students})
+            }).then(response => response.text()).then(data => {
+                alert('غیبت دانش‌آموزان با موفقیت ثبت شد.');
+                console.log(data);
+                isSubmitting = false; 
+                location.reload();
+            }).catch(error => {
+                console.error('Error:', error);
+                isSubmitting = false; 
+            });
+        }
+
+        function clearAbsences() {
+            const password = document.getElementById('adminPassword').value;
+            fetch('clear.php?password=' + password).then(response => response.text()).then(data => {
+                alert(data);
+                document.getElementById('absenceList').innerHTML = '';
+                document.getElementById('adminPassword').value = '';
+                showAllAbsences();
+            });
+        }
+
+        function showAllAbsences() {
+            fetch('register.php?show_all=true').then(response => response.text()).then(data => {
+                document.getElementById('absenceList').innerHTML = data;
+            });
+        }
+        
+    </script>
+</body>
+</html>
