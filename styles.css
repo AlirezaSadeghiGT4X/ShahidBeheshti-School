@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #00ff00;
+}
+
+input[type="text"], input[type="password"], select {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 19px;
+    width: 300px;
+    font-style: italic;
+}
+
+button:hover {
+    background-color: #000000;
+}
+
+.delete {
+    background-color: #dc3545;
+}
+
+.delete:hover {
+    background-color: #8b1420;
+}
+
+#absenceList {
+    margin-top: 20px;
+    text-align: left;
+    border-radius: 20px;
+}
+
+#absenceList ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#absenceList li {
+    background-color: #f8f9fa;
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+*{
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+label{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+}
+
+a {
+    display: block;
+    width: 100px;
+    height: 100px;
+    background: url('Sampad.png') no-repeat center center;
+    background-size: contain;
+    text-indent: -9999px; 
+    width: 0px;
+    height: 0px;
+}
+
+.scrollable {
+    max-height: 300px;
+    overflow-y: scrol;
+}
